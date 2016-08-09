@@ -60,6 +60,16 @@
     border:1px solid gray;
     margin:0;
   }
+  #foot {
+    position:absolute;
+    bottom:10px;
+    right:10px;
+  }
+  #foot a {
+    font-size:small;
+    text-decoration:none;
+    color:white;
+  }
   </style>
 </head>
 <body>
@@ -75,6 +85,9 @@
   <button>torus</button>
   <button>torusKnot</button>
   <button>yoda</button>
+</div>
+<div id="foot">
+  <a href="http://dcgi.fel.cvut.cz/home/sykorad/stylit" target="_blank">Inspired by http://dcgi.fel.cvut.cz/home/sykorad/stylit</a>
 </div>
 <canvas id="texture" class="hide" width="400" height="400"></canvas>
 <script src="lib/three.js"></script>
@@ -123,23 +136,90 @@ function swapFaces(geometry, face) {
 
 function setupGeometryUvs(targetMesh, sphereMesh) {
   var raycaster = new THREE.Raycaster(new THREE.Vector3());
-  targetMesh.geometry.faces.forEach(function(face, faceIndex) {
-    var origin = sphereMesh.position.clone().add(face.normal.clone().multiplyScalar(2));
-    var direction = face.normal.clone().negate();
-    raycaster.set(origin, direction);
-    var intersects = raycaster.intersectObject(sphereMesh);
-    if (0 < intersects.length) {
-      swapFaces(targetMesh.geometry, face);
-      var intersect = intersects[0];
-      var uv = sphereMesh.geometry.faceVertexUvs[0][intersect.faceIndex];
-      for (var i = 0; i < 3; i++) {
-        targetMesh.geometry.faceVertexUvs[0][faceIndex][i].copy(uv[i]);
+  if (targetMesh.geometry instanceof THREE.BufferGeometry) {
+    var uvs = [];
+    var positions = targetMesh.geometry.getAttribute('position');
+    var normals = targetMesh.geometry.getAttribute('normal');
+    for (var i = 0; i < positions.count; i += 3) {
+      var px1 = positions.getX(i);
+      var py1 = positions.getY(i);
+      var pz1 = positions.getZ(i);
+      var px2 = positions.getX(i+1);
+      var py2 = positions.getY(i+1);
+      var pz2 = positions.getZ(i+1);
+      var px3 = positions.getX(i+2);
+      var py3 = positions.getY(i+2);
+      var pz3 = positions.getZ(i+2);
+      positions.setX(i, px1/30);
+      positions.setY(i, py1/30);
+      positions.setZ(i, pz1/30);
+      positions.setX(i+1, px2/30);
+      positions.setY(i+1, py2/30);
+      positions.setZ(i+1, pz2/30);
+      positions.setX(i+2, px3/30);
+      positions.setY(i+2, py3/30);
+      positions.setZ(i+2, pz3/30);
+
+      var nx1 = normals.getX(i);
+      var ny1 = normals.getY(i);
+      var nz1 = normals.getZ(i);
+      var nx2 = normals.getX(i+1);
+      var ny2 = normals.getY(i+1);
+      var nz2 = normals.getZ(i+1);
+      var nx3 = normals.getX(i+2);
+      var ny3 = normals.getY(i+2);
+      var nz3 = normals.getZ(i+2);
+      var normal = new THREE.Vector3(
+        (nx1 + nx2 + nx3) / 3.0,
+        (ny1 + ny2 + ny3) / 3.0,
+        (nz1 + nz2 + nz3) / 3.0
+      ).normalize();
+      var origin = sphereMesh.position.clone().add(normal.clone().multiplyScalar(2));
+      var direction = normal.clone().negate();
+      raycaster.set(origin, direction);
+      var intersects = raycaster.intersectObject(sphereMesh);
+      if (0 < intersects.length) {
+        var intersect = intersects[0];
+        var uv = sphereMesh.geometry.faceVertexUvs[0][intersect.faceIndex];
+        for (var j = 0; j < 3; j++) {
+          uvs.push(uv[j].x);
+          uvs.push(uv[j].y);
+        }
+      }
+      else {
+        //console.log('intersects is []. (i = ' + i + ')');
+        for (var j = 0; j < 3; j++) {
+          uvs.push(0);
+          uvs.push(0);
+        }
       }
     }
-    else {
-      console.log('intersects is []. (faceIndex = ' + faceIndex + ')');
+    var typedUvs = new Float32Array(uvs.length);
+    for (var i = 0; i < uvs.length; i++) {
+      typedUvs[i] = uvs[i];
     }
-  });
+    targetMesh.geometry.addAttribute('uv', new THREE.BufferAttribute(typedUvs, 2));
+    console.log(targetMesh.geometry.attributes);
+  }
+  else if (targetMesh.geometry instanceof THREE.Geometry) {
+    targetMesh.geometry.faces.forEach(function(face, faceIndex) {
+      var origin = sphereMesh.position.clone().add(face.normal.clone().multiplyScalar(2));
+      var direction = face.normal.clone().negate();
+      raycaster.set(origin, direction);
+      var intersects = raycaster.intersectObject(sphereMesh);
+      if (0 < intersects.length) {
+        swapFaces(targetMesh.geometry, face);
+        var intersect = intersects[0];
+        var uv = sphereMesh.geometry.faceVertexUvs[0][intersect.faceIndex];
+        for (var i = 0; i < 3; i++) {
+          targetMesh.geometry.faceVertexUvs[0][faceIndex][i].copy(uv[i]);
+        }
+      }
+      else {
+        console.log('intersects is []. (faceIndex = ' + faceIndex + ')');
+      }
+    });
+  }
 }
 
 function createTargetMesh(type, texture, after) {
@@ -147,32 +227,51 @@ function createTargetMesh(type, texture, after) {
   if (type === 'torus') {
     targetGeometry = new THREE.TorusGeometry(1, 0.3, 128, 64);
     var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
-    var targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
-    setupGeometryUvs(targetMesh, sphereMesh);
-    if (after) after(targetMesh);
-    return targetMesh;
+    var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
+    setupGeometryUvs(mesh, sphereMesh);
+    if (targetMesh) {
+      scene.remove(targetMesh);
+      targetMesh.geometry.dispose();
+    }
+    scene.add(mesh);
+    targetMesh = mesh;
+    targetMesh.material.map.needsUpdate = true;
+    if (after) after(mesh);
   }
   else if (type === 'torusKnot') {
     targetGeometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
     var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
-    var targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
-    setupGeometryUvs(targetMesh, sphereMesh);
-    if (after) after(targetMesh);
-    return targetMesh;
+    var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
+    setupGeometryUvs(mesh, sphereMesh);
+    if (targetMesh) {
+      scene.remove(targetMesh);
+      targetMesh.geometry.dispose();
+    }
+    scene.add(mesh);
+    targetMesh = mesh;
+    targetMesh.material.map.needsUpdate = true;
+    if (after) after(mesh);
   }
   else if (type === 'yoda') {
     var loader = new THREE.STLLoader();
-    loader.addEventListener('load', function(event) {
-      var tergetGeometry = event.content;
+    loader.load('Yoda-SuperLite.stl', function(geometry) {
+      var targetGeometry = geometry;
       var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
-      var targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
-      setupGeometryUvs(targetMesh, sphereMesh);
-      if (after) after(targetMesh);
+      var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
+      setupGeometryUvs(mesh, sphereMesh);
+      if (targetMesh) {
+        scene.remove(targetMesh);
+        targetMesh.geometry.dispose();
+      }
+      scene.add(mesh);
+      targetMesh = mesh;
+      targetMesh.material.map.needsUpdate = true;
+      if (after) after(mesh);
     });
-    loader.load('Yoda-SuperLite.stl');
   }
 }
 
+var targetMesh;
 var texture = document.getElementById('texture');
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -183,7 +282,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.id = 'wegbl-canvas';
 document.body.appendChild(renderer.domElement);
 
-var sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+var sphereGeometry = new THREE.SphereGeometry(1, 62, 62);
 sphereGeometry.faces.forEach(function(face, faceIndex) {
   swapFaces(sphereGeometry, face);
   var uv = sphereGeometry.faceVertexUvs[0][faceIndex];
@@ -198,8 +297,7 @@ sphereMesh.material.transparent = true;
 sphereMesh.material.opacity = 0;
 scene.add(sphereMesh);
 
-var targetMesh = createTargetMesh('torusKnot', texture);
-scene.add(targetMesh);
+createTargetMesh('torusKnot', texture);
 
 
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -235,14 +333,14 @@ imgs.forEach(function(img) {
 buttons = document.querySelectorAll('#geometries button');
 buttons.forEach(function(button) {
   button.addEventListener('click', function() {
-    var newMesh = createTargetMesh(button.textContent, texture);
-    if (newMesh) {
-      scene.remove(targetMesh);
-      targetMesh = newMesh;
-      scene.add(targetMesh);
-      targetMesh.material.map.needsUpdate = true;
-    }
+    createTargetMesh(button.textContent, texture);
   });
+});
+
+window.addEventListener('resize', function() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
 </body>
