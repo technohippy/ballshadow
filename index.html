@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!--
+    http://www.thingiverse.com/thing:10752
+  -->
   <meta charset=utf-8>
   <title>My first Three.js app</title>
   <style>
@@ -44,6 +47,9 @@
     width:30px;
     height:30px;
   }
+  #textures img[src="movie.png"] {
+    margin-top:10px;
+  }
   #geometries {
     margin:0;
     padding:0;
@@ -70,9 +76,27 @@
     text-decoration:none;
     color:white;
   }
+  video {
+    z-index:2;
+    position:absolute;
+    top:10px;
+    right:30px;
+    width:400px;
+    height:300px;
+    transition-property: top, width, height;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+  video.hide {
+    z-index:0;
+    width:0;
+    height:30px;
+    top:190px;
+  }
   </style>
 </head>
 <body>
+<video class="hide" width="400" height="300" autoplay></video>
 <div id="textures">
   <img src="white.png">
   <img src="r2b.jpg">
@@ -80,8 +104,10 @@
   <img src="texture.png">
   <img src="soil.png">
   <img src="iron.png">
+  <img src="movie.png">
 </div>
 <div id="geometries">
+  <button>sphere</button>
   <button>torus</button>
   <button>torusKnot</button>
   <button>yoda</button>
@@ -107,30 +133,22 @@
 })();
 </script>
 <script>
-function swapFaces(geometry, face) {
-  return;
+function getMinUvI(geometry, faceIndex) {
+  var face = geometry.faces[faceIndex]
   var va = geometry.vertices[face.a];
   var vb = geometry.vertices[face.b];
   var vc = geometry.vertices[face.c];
   if (va.y < vb.y) {
     if (vc.y < va.y) {
-      var swap = face.b;
-      face.b = face.a;
-      face.a = face.c;
-      face.c = swap;
+      return 2;
     }
+    return 0;
   }
   else if (vb.y < vc.y) {
-    var swap = face.a;
-    face.a = face.b
-    face.b = face.c
-    face.c = swap;
+    return 1;
   }
   else {
-    var swap = face.b;
-    face.b = face.a;
-    face.a = face.c;
-    face.c = swap;
+    return 2;
   }
 }
 
@@ -208,11 +226,14 @@ function setupGeometryUvs(targetMesh, sphereMesh) {
       raycaster.set(origin, direction);
       var intersects = raycaster.intersectObject(sphereMesh);
       if (0 < intersects.length) {
-        swapFaces(targetMesh.geometry, face);
         var intersect = intersects[0];
-        var uv = sphereMesh.geometry.faceVertexUvs[0][intersect.faceIndex];
+        var sphereUv = sphereMesh.geometry.faceVertexUvs[0][intersect.faceIndex];
+        var minSphereUvI = getMinUvI(sphereMesh.geometry, intersect.faceIndex);
+        var targetUv = targetMesh.geometry.faceVertexUvs[0][faceIndex];
+        var minTargetUvI = getMinUvI(targetMesh.geometry, faceIndex);
+        var di = minSphereUvI - minTargetUvI;
         for (var i = 0; i < 3; i++) {
-          targetMesh.geometry.faceVertexUvs[0][faceIndex][i].copy(uv[i]);
+          targetUv[i].copy(sphereUv[(i+di+3)%3]);
         }
       }
       else {
@@ -224,7 +245,12 @@ function setupGeometryUvs(targetMesh, sphereMesh) {
 
 function createTargetMesh(type, texture, after) {
   var targetGeometry;
-  if (type === 'torus') {
+  if (type === 'sphere') {
+    sphereMesh.material.transparent = false;
+    targetMesh.visible = false;
+  }
+  else if (type === 'torus') {
+    sphereMesh.material.transparent = true;
     targetGeometry = new THREE.TorusGeometry(1, 0.3, 128, 64);
     var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
     var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
@@ -239,6 +265,7 @@ function createTargetMesh(type, texture, after) {
     if (after) after(mesh);
   }
   else if (type === 'torusKnot') {
+    sphereMesh.material.transparent = true;
     targetGeometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
     var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
     var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
@@ -253,6 +280,7 @@ function createTargetMesh(type, texture, after) {
     if (after) after(mesh);
   }
   else if (type === 'yoda') {
+    sphereMesh.material.transparent = true;
     var loader = new THREE.STLLoader();
     loader.load('Yoda-SuperLite.stl', function(geometry) {
       var targetGeometry = geometry;
@@ -271,6 +299,7 @@ function createTargetMesh(type, texture, after) {
   }
 }
 
+var video = document.getElementsByTagName('video')[0];
 var targetMesh;
 var texture = document.getElementById('texture');
 var scene = new THREE.Scene();
@@ -282,9 +311,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.id = 'wegbl-canvas';
 document.body.appendChild(renderer.domElement);
 
-var sphereGeometry = new THREE.SphereGeometry(1, 62, 62);
+var sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 sphereGeometry.faces.forEach(function(face, faceIndex) {
-  swapFaces(sphereGeometry, face);
   var uv = sphereGeometry.faceVertexUvs[0][faceIndex];
   ['a', 'b', 'c'].forEach(function(vi, i) {
     uv[i].x = sphereGeometry.vertices[face[vi]].x / 2 + 0.5;
@@ -323,10 +351,32 @@ image.onload = function() {
 };
 image.src = 'iron.png';
 
+video.addEventListener('click', function() {
+  gc.drawImage(video, 50, 0, 600, 600, 0, 0, 500, 500);
+  sphereMesh.material.map.needsUpdate = true;
+  targetMesh.material.map.needsUpdate = true;
+  video.className = 'hide';
+});
+
 var imgs = document.querySelectorAll('#textures img');
 imgs.forEach(function(img) {
   img.addEventListener('click', function() {
-    image.src = img.src;
+    if (img.src.match(/movie\.png$/)) {
+      if (video.className === 'hide') {
+        video.className = '';
+        navigator.webkitGetUserMedia({video:true}, function(stream) {
+          video.src = window.URL.createObjectURL(stream);
+        }, function(err) {
+          console.log(err);
+        });
+      }
+      else {
+        video.className = 'hide';
+      }
+    }
+    else {
+      image.src = img.src;
+    }
   });
 });
 
