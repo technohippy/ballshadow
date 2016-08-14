@@ -10,7 +10,7 @@
 <script>
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
 peer.on('open', function(id) {
-  window.location.search = id;
+  window.location.hash = id;
 });
 </script>
 </body>
