@@ -232,8 +232,14 @@ image.onload = function() {
 };
 image.src = 'iron.png';
 
+var diSy = 75;
+var diSw = 400;
+var diSh = 400;
+var diDw = 500;
+var diDh = 500;
 video.addEventListener('click', function() {
-  gc.drawImage(video, 0, 50, 300, 300, 0, 0, 400, 400);
+  //gc.drawImage(video, 0, 75, 400, 400, 0, 0, 500, 500);
+  gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
   video.className = 'hide';
