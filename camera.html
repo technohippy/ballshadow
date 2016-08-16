@@ -15,11 +15,11 @@
     left:0;
     width:100%;
     height:100%;
-width:100px;
-height:100px;
     z-index:-1;
   }
   #connect {
+    position:absolute;
+    bottom:0;
   }
   </style>
 </head>
@@ -44,25 +44,24 @@ connectButton.addEventListener('click', function() {
 
 window.addEventListener('load', function() {
   MediaStreamTrack.getSources(function(sources) {
+    var options = {video:true};
     sources.forEach(function(source) {
       if (source.kind === 'video' && source.facing === 'environment') {
-        var cameraId = source.id;
-
-        navigator.webkitGetUserMedia(
-            //{video:true},
-            {video:{optional:[{sourceId:cameraId}]}},
-          function(localMediaStream) {
-            var video = document.getElementById('camera');
-            video.src = window.URL.createObjectURL(localMediaStream);
-            mediaStream = localMediaStream;
-            //connectButton.setAttribute('disabled', false);
-          },
-          function(error) {
-            console.log(error);
-          }
-        );
+        options['video'] = {optional:[{sourceId:source.id}]};
       }
     })
+
+    navigator.webkitGetUserMedia(options,
+      function(localMediaStream) {
+        var video = document.getElementById('camera');
+        video.src = window.URL.createObjectURL(localMediaStream);
+        mediaStream = localMediaStream;
+        //connectButton.setAttribute('disabled', false);
+      },
+      function(error) {
+        console.log(error);
+      }
+    );
   });
 });
 </script>
