@@ -44,7 +44,8 @@ connectButton.addEventListener('click', function() {
 
 window.addEventListener('load', function() {
   navigator.webkitGetUserMedia(
-    {video:true},
+      //{video:true},
+    {video:{width:{facingMode:{exact:"environment"}}}},
     function(localMediaStream) {
       var video = document.getElementById('camera');
       video.src = window.URL.createObjectURL(localMediaStream);
