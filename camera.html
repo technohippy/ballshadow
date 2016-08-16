@@ -4,13 +4,55 @@
   <meta charset=utf-8>
   <title>Ball Shadow</title>
   <link rel="stylesheet" href="css/main.css" type="text/css"></link>
+  <style>
+  html, body {
+    margin:0;
+    padding:0;
+  }
+  video {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+width:100px;
+height:100px;
+    z-index:-1;
+  }
+  #connect {
+  }
+  </style>
 </head>
 <body>
+<video id="camera" autoplay></video>
+<button id="connect" disabled="true">Connect</button>
 <script src="https://skyway.io/dist/0.3/peer.js"></script>
 <script>
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
 peer.on('open', function(id) {
   window.location.hash = id;
+});
+
+var mediaStream;
+
+var connectButton = document.getElementById('connect');
+connectButton.addEventListener('click', function() {
+  var peerId = window.prompt('Input the peer ID.');
+  var call = peer.call(peerId, mediaStream);
+});
+
+window.addEventListener('load', function() {
+  navigator.webkitGetUserMedia(
+    {video:true},
+    function(localMediaStream) {
+      var video = document.getElementById('camera');
+      video.src = window.URL.createObjectURL(localMediaStream);
+      mediaStream = localMediaStream;
+    },
+    function(error) {
+      console.log(error);
+    }
+  );
 });
 </script>
 </body>

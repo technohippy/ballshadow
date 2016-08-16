@@ -244,11 +244,13 @@ imgs.forEach(function(img) {
     if (img.src.match(/movie\.png$/)) {
       if (video.className === 'hide') {
         video.className = '';
+        /*
         navigator.webkitGetUserMedia({video:true}, function(stream) {
           video.src = window.URL.createObjectURL(stream);
         }, function(err) {
           console.log(err);
         });
+        */
       }
       else {
         video.className = 'hide';
