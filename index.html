@@ -37,7 +37,11 @@
 <script>
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
 peer.on('open', function(id) {
-  new QRCode(qrcode, window.location + 'camera.html#' + id)
+  new QRCode(qrcode, {
+    text: window.location + 'camera.html#' + id
+    width: 128,
+    height: 128
+  });
 });
 peer.on('call', function(call) {
   call.answer();

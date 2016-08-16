@@ -17,6 +17,13 @@ body { margin: 0; }
   bottom:-380px;
   left:-380px;
 }
+#qrcode {
+  position:absolute;
+  top:0;
+  left:100px;
+  width:128px;
+  height:128px;
+}
 #qrcode.hide {
   display:none;
 }
