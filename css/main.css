@@ -21,8 +21,10 @@ body { margin: 0; }
   position:absolute;
   top:0;
   left:100px;
-  width:128px;
-  height:128px;
+  width:148px;
+  height:148px;
+  padding:5px;
+  background:white;
 }
 #qrcode.hide {
   display:none;
