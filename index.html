@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="css/main.css" type="text/css"></link>
 </head>
 <body>
-<video class="hide" width="400" height="300" autoplay></video>
+<video class="hide" width="300" height="400" autoplay></video>
 <div id="qrcode" class="hide"></div>
 <div id="textures">
   <img src="white.png">
@@ -44,10 +44,10 @@ peer.on('open', function(id) {
   });
 });
 peer.on('call', function(call) {
-  call.answer();
   call.on('stream', function(stream) {
     video.src = window.URL.createObjectURL(stream);
   });
+  call.answer();
 });
 </script>
 </body>

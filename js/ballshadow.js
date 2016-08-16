@@ -233,7 +233,7 @@ image.onload = function() {
 image.src = 'iron.png';
 
 video.addEventListener('click', function() {
-  gc.drawImage(video, 50, 0, 600, 600, 0, 0, 500, 500);
+  gc.drawImage(video, 0, 50, 300, 300, 0, 0, 500, 500);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
   video.className = 'hide';
