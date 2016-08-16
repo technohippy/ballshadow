@@ -50,7 +50,7 @@ window.addEventListener('load', function() {
       var video = document.getElementById('camera');
       video.src = window.URL.createObjectURL(localMediaStream);
       localMediaStream.getVideoTracks().forEach(function(ms) {
-        document.body.innerHTML = 'enabled:' + ms.enabled + ' id:' + ms.id + ' muted:' + ms.muted + '<br>';
+        document.body.innerHTML += 'enabled:' + ms.enabled + ' id:' + ms.id + ' muted:' + ms.muted + '<br>';
       });
       mediaStream = localMediaStream;
       //connectButton.setAttribute('disabled', false);
