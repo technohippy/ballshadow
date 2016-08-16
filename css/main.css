@@ -17,6 +17,9 @@ body { margin: 0; }
   bottom:-380px;
   left:-380px;
 }
+#qrcode.hide {
+  display:none;
+}
 #webgl-canvas {
   margin:0;
   padding:0;

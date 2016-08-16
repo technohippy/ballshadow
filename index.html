@@ -7,6 +7,7 @@
 </head>
 <body>
 <video class="hide" width="400" height="300" autoplay></video>
+<div id="qrcode" class="hide"></div>
 <div id="textures">
   <img src="white.png">
   <img src="r2b.jpg">
@@ -15,6 +16,7 @@
   <img src="soil.png">
   <img src="iron.png">
   <img src="movie.png">
+  <img src="phone.png">
 </div>
 <div id="geometries">
   <button>sphere</button>
@@ -30,11 +32,12 @@
 <script src="lib/three.js"></script>
 <script src="lib/OrbitControls.js"></script>
 <script src="lib/STLLoader.js"></script>
+<script src="lib/qrcode.js"></script>
 <script src="js/ballshadow.js"></script>
 <script>
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
 peer.on('open', function(id) {
-  window.location.hash = id;
+  new QRCode(qrcode, window.location + 'camera.html#' + id)
 });
 peer.on('call', function(call) {
   call.answer();

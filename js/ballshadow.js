@@ -180,6 +180,7 @@ function createTargetMesh(type, texture, after) {
 }
 
 var video = document.getElementsByTagName('video')[0];
+var qrcode = document.getElementById('qrcode');
 var targetMesh;
 var texture = document.getElementById('texture');
 var scene = new THREE.Scene();
@@ -254,6 +255,14 @@ imgs.forEach(function(img) {
       }
       else {
         video.className = 'hide';
+      }
+    }
+    else if (img.src.match(/phone\.png$/)) {
+      if (qrcode.className === 'hide') {
+        qrcode.className = '';
+      }
+      else {
+        qrcode.className = 'hide';
       }
     }
     else {
