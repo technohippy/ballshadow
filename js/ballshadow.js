@@ -233,9 +233,9 @@ image.onload = function() {
 //image.src = 'iron.png';
 image.src = 'texture.png';
 
-var diSy = 75;
-var diSw = 400;
-var diSh = 400;
+var diSy = 60;
+var diSw = 450;
+var diSh = 450;
 var diDw = 500;
 var diDh = 500;
 video.addEventListener('click', function() {
