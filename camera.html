@@ -25,7 +25,8 @@ height:100px;
 </head>
 <body>
 <video id="camera" autoplay></video>
-<button id="connect" disabled="true">Connect</button>
+<!--button id="connect" disabled="true">Connect</button-->
+<button id="connect">Connect</button>
 <script src="https://skyway.io/dist/0.3/peer.js"></script>
 <script>
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
@@ -48,7 +49,7 @@ window.addEventListener('load', function() {
       var video = document.getElementById('camera');
       video.src = window.URL.createObjectURL(localMediaStream);
       mediaStream = localMediaStream;
-      connectButton.setAttribute('disabled', false);
+      //connectButton.setAttribute('disabled', false);
     },
     function(error) {
       console.log(error);
