@@ -48,6 +48,7 @@ window.addEventListener('load', function() {
       var video = document.getElementById('camera');
       video.src = window.URL.createObjectURL(localMediaStream);
       mediaStream = localMediaStream;
+      connectButton.setAttribute('disabled', false);
     },
     function(error) {
       console.log(error);
