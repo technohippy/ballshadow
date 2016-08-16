@@ -230,7 +230,8 @@ image.onload = function() {
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
 };
-image.src = 'iron.png';
+//image.src = 'iron.png';
+image.src = 'texture.png';
 
 var diSy = 75;
 var diSw = 400;
