@@ -43,22 +43,27 @@ connectButton.addEventListener('click', function() {
 });
 
 window.addEventListener('load', function() {
-  navigator.webkitGetUserMedia(
-      //{video:true},
-    {video:{width:{facingMode:{exact:"environment"}}}},
-    function(localMediaStream) {
-      var video = document.getElementById('camera');
-      video.src = window.URL.createObjectURL(localMediaStream);
-      localMediaStream.getVideoTracks().forEach(function(ms) {
-        document.body.innerHTML += 'enabled:' + ms.enabled + ' id:' + ms.id + ' muted:' + ms.muted + '<br>';
-      });
-      mediaStream = localMediaStream;
-      //connectButton.setAttribute('disabled', false);
-    },
-    function(error) {
-      console.log(error);
-    }
-  );
+  MediaStreamTrack.getSources(function(sources) {
+    sources.forEach(function(source) {
+      if (source.kind === 'video' && source.facing === 'environment') {
+        var cameraId = source.id;
+
+        navigator.webkitGetUserMedia(
+            //{video:true},
+            {video:{optional:[{sourceId:cameraId}]}},
+          function(localMediaStream) {
+            var video = document.getElementById('camera');
+            video.src = window.URL.createObjectURL(localMediaStream);
+            mediaStream = localMediaStream;
+            //connectButton.setAttribute('disabled', false);
+          },
+          function(error) {
+            console.log(error);
+          }
+        );
+      }
+    })
+  });
 });
 </script>
 </body>
