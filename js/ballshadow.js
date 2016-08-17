@@ -236,14 +236,20 @@ image.src = 'img/texture.png';
 video.addEventListener('click', function() {
   video.style.width = video.videoWidth + 'px';
   video.style.height = video.videoHeight + 'px';
-  var diSy = (video.videoHeight - video.videoWidth) / 2;
-  var diSw = video.videoWidth;
-  //var diSh = video.videoHeight;
-  var diSh = video.videoWidth;
+
+  var diSx = 0;
+  var diSy = 0;
+  if (video.videoWidth < video.videoHeight) {
+    diSy = (video.videoHeight - video.videoWidth) / 2;
+  }
+  else {
+    diSx = (video.videoWidth - video.videoHeight) / 2;
+  }
+  var diSw = Math.min(video.videoWidth, video.videoHeight);
+  var diSh = Math.min(video.videoWidth, video.videoHeight);
   var diDw = 400;
   var diDh = 400;
-  gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
-  console.log("gc.drawImage(video, 0, " + diSy + ", " + diSw + ", " + diSh + ", 0, 0, " + diDw + ", " + diDh + ");");
+  gc.drawImage(video, diSx, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
   video.className = 'hide';
@@ -266,7 +272,7 @@ imgs.forEach(function(img) {
         */
       }
       else {
-//        video.className = 'hide';
+        video.className = 'hide';
       }
     }
     else if (img.src.match(/phone\.png$/)) {
