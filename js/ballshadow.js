@@ -234,16 +234,13 @@ image.onload = function() {
 image.src = 'img/texture.png';
 
 video.addEventListener('click', function() {
-  var texture = document.getElementById('texture');
   var diSy = (video.videoHeight - video.videoWidth) / 2;
   var diSw = video.videoWidth;
   var diSh = video.videoHeight;
   var diDw = 500;
   var diDh = 500;
-  texture.width = video.videoWidth;
-  texture.height = video.videoHeight;
-  texture.style.width = video.videoWidth + 'px';
-  texture.style.height = video.videoHeight + 'px';
+  video.style.width = video.videoWidth + 'px';
+  video.style.height = video.videoHeight + 'px';
   console.log('' + video.videoWidth + ',' + video.videoHeight);
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
