@@ -243,7 +243,6 @@ video.addEventListener('click', function() {
   var diDh = 400;
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   console.log("gc.drawImage(video, 0, " + diSy + ", " + diSw + ", " + diSh + ", 0, 0, " + diDw + ", " + diDh + ");");
-      );
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
   video.className = 'hide';
