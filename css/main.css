@@ -84,16 +84,13 @@ video {
   position:absolute;
   top:10px;
   right:30px;
-  width:300px;
-  height:400px;
   transition-property: top, width, height;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
 }
 video.hide {
   z-index:0;
-  width:0;
-  height:30px;
   top:190px;
+  display:none;
 }
 
