@@ -239,8 +239,6 @@ video.addEventListener('click', function() {
   var diSh = video.videoHeight;
   var diDw = 500;
   var diDh = 500;
-  video.style.width = video.videoWidth + 'px';
-  video.style.height = video.videoHeight + 'px';
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
