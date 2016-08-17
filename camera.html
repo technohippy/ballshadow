@@ -44,10 +44,12 @@ connectButton.addEventListener('click', function() {
 });
 
 window.addEventListener('load', function() {
+  var facing = window.confirm('Do you want to use a rear camera?') ? 'environment' : 'user';
+
   MediaStreamTrack.getSources(function(sources) {
     var options = {video:true};
     sources.forEach(function(source) {
-      if (source.kind === 'video' && source.facing === 'environment') {
+      if (source.kind === 'video' && source.facing === facing) {
         options['video'] = {optional:[{sourceId:source.id}]};
       }
     })
