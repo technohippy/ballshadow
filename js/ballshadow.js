@@ -233,13 +233,12 @@ image.onload = function() {
 //image.src = 'iron.png';
 image.src = 'texture.png';
 
-var diSy = 60;
-var diSw = 450;
-var diSh = 450;
-var diDw = 500;
-var diDh = 500;
 video.addEventListener('click', function() {
-  //gc.drawImage(video, 0, 75, 400, 400, 0, 0, 500, 500);
+  var diSy = (video.videoHeight - video.videoWidth) / 2;
+  var diSw = video.videoWidth;
+  var diSh = video.videoHeight;
+  var diDw = 500;
+  var diDh = 500;
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
