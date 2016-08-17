@@ -251,6 +251,8 @@ imgs.forEach(function(img) {
     if (img.src.match(/movie\.png$/)) {
       if (video.className === 'hide') {
         video.className = '';
+        video.style.width = video.videoWidth + 'px';
+        video.style.height = video.videoHeight + 'px';
         /*
         navigator.webkitGetUserMedia({video:true}, function(stream) {
           video.src = window.URL.createObjectURL(stream);

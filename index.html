@@ -46,12 +46,6 @@ peer.on('open', function(id) {
 peer.on('call', function(call) {
   call.on('stream', function(stream) {
     video.src = window.URL.createObjectURL(stream);
-    if (video.style.width !== video.videoWidth) {
-      video.style.width = video.videoWidth + 'px';
-    }
-    if (video.style.height !== video.videoHeight) {
-      video.style.height = video.videoHeight + 'px';
-    }
   });
   call.answer();
 });
