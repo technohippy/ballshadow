@@ -238,7 +238,8 @@ video.addEventListener('click', function() {
   video.style.height = video.videoHeight + 'px';
   var diSy = (video.videoHeight - video.videoWidth) / 2;
   var diSw = video.videoWidth;
-  var diSh = video.videoHeight;
+  //var diSh = video.videoHeight;
+  var diSh = video.videoWidth;
   var diDw = 400;
   var diDh = 400;
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
