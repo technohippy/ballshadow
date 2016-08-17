@@ -234,6 +234,8 @@ image.onload = function() {
 image.src = 'img/texture.png';
 
 video.addEventListener('click', function() {
+  video.style.width = video.videoWidth + 'px';
+  video.style.height = video.videoHeight + 'px';
   var diSy = (video.videoHeight - video.videoWidth) / 2;
   var diSw = video.videoWidth;
   var diSh = video.videoHeight;
@@ -262,7 +264,7 @@ imgs.forEach(function(img) {
         */
       }
       else {
-        video.className = 'hide';
+//        video.className = 'hide';
       }
     }
     else if (img.src.match(/phone\.png$/)) {
