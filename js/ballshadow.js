@@ -162,7 +162,7 @@ function createTargetMesh(type, texture, after) {
   else if (type === 'yoda') {
     sphereMesh.material.transparent = true;
     var loader = new THREE.STLLoader();
-    loader.load('Yoda-SuperLite.stl', function(geometry) {
+    loader.load('model/Yoda-SuperLite.stl', function(geometry) {
       var targetGeometry = geometry;
       var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
       var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
