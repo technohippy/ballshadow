@@ -47,7 +47,16 @@ window.addEventListener('load', function() {
   var facing = window.confirm('Do you want to use a rear camera?') ? 'environment' : 'user';
 
   MediaStreamTrack.getSources(function(sources) {
-    var options = {video:true};
+    var options = {
+      video:{
+        mandatory:{
+          minWidth:480,
+          maxWidth:480,
+          minHeight:640,
+          maxHeight:640,
+        }
+      }
+    };
     sources.forEach(function(source) {
       if (source.kind === 'video' && source.facing === facing) {
         options['video'] = {optional:[{sourceId:source.id}]};
