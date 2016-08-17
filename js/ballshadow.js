@@ -240,9 +240,11 @@ video.addEventListener('click', function() {
   var diSh = video.videoHeight;
   var diDw = 500;
   var diDh = 500;
-  texture.width = texture.style.width = video.videoWidth;
-  texture.height = texture.style.height = video.videoHeight;
-  console.log('' + video.videoWidth + ',' + video.videoHeigth);
+  texture.width = video.videoWidth;
+  texture.height = video.videoHeight;
+  texture.style.width = video.videoWidth + 'px';
+  texture.style.height = video.videoHeight + 'px';
+  console.log('' + video.videoWidth + ',' + video.videoHeight);
   gc.drawImage(video, 0, diSy, diSw, diSh, 0, 0, diDw, diDh);
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
