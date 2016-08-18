@@ -18,7 +18,7 @@
     height:100%;
     z-index:-1;
   }
-  #connect {
+  #finish {
     position:absolute;
     bottom:0;
   }
@@ -26,21 +26,18 @@
 </head>
 <body>
 <video id="camera" autoplay></video>
-<!--button id="connect" disabled="true">Connect</button-->
-<button id="connect">Connect</button>
+<button id="finish">Finish</button>
 <script src="https://skyway.io/dist/0.3/peer.js"></script>
 <script>
+var targetPeerId = window.location.hash.substring(1);
 var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
-peer.on('open', function(id) {
-  //window.location.hash = id;
-});
-
+peer.on('open', function(id) { console.log('peer id:' + id) });
+var conn = peer.connect(targetPeerId);
 var mediaStream;
 
-var connectButton = document.getElementById('connect');
-connectButton.addEventListener('click', function() {
-  var peerId = window.prompt('Input the peer ID.');
-  var call = peer.call(peerId, mediaStream);
+var finishButton = document.getElementById('finish');
+finishButton.addEventListener('click', function() {
+  conn.send('freeze');
 });
 
 window.addEventListener('load', function() {
@@ -67,8 +64,7 @@ window.addEventListener('load', function() {
       function(localMediaStream) {
         var video = document.getElementById('camera');
         video.src = window.URL.createObjectURL(localMediaStream);
-        var peerId = window.location.hash.substring(1);
-        var call = peer.call(peerId, localMediaStream);
+        var call = peer.call(targetPeerId, localMediaStream);
         mediaStream = localMediaStream;
       },
       function(error) {

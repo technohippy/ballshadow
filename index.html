@@ -49,6 +49,16 @@ peer.on('call', function(call) {
   });
   call.answer();
 });
+peer.on('connection', function(conn) {
+  conn.on('open', function() {
+    conn.on('data', function(data) {
+      console.log('received: ' + data);
+      if (data === 'freeze') {
+        video.click();
+      }
+    });
+  });
+});
 </script>
 </body>
 </html>
