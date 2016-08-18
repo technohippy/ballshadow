@@ -1,11 +1,11 @@
 (function() {
-  var texture = document.getElementById('texture');
-  texture.addEventListener('click', function() {
-    if (texture.className === 'hide') {
-      texture.className = '';
+  var canvas = document.getElementById('texture');
+  canvas.addEventListener('click', function() {
+    if (canvas.className === 'hide') {
+      canvas.className = '';
     }
     else {
-      texture.className = 'hide';
+      canvas.className = 'hide';
     }
   });
 })();
@@ -123,7 +123,7 @@ function setupGeometryUvs(targetMesh, sphereMesh) {
   }
 }
 
-function createTargetMesh(type, texture, after) {
+function createTargetMesh(type, canvas, after) {
   var targetGeometry;
   if (type === 'sphere') {
     sphereMesh.material.transparent = false;
@@ -132,7 +132,7 @@ function createTargetMesh(type, texture, after) {
   else if (type === 'torus') {
     sphereMesh.material.transparent = true;
     targetGeometry = new THREE.TorusGeometry(1, 0.3, 128, 64);
-    var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
+    var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(canvas)});
     var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
     setupGeometryUvs(mesh, sphereMesh);
     if (targetMesh) {
@@ -147,7 +147,7 @@ function createTargetMesh(type, texture, after) {
   else if (type === 'torusKnot') {
     sphereMesh.material.transparent = true;
     targetGeometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-    var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
+    var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(canvas)});
     var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
     setupGeometryUvs(mesh, sphereMesh);
     if (targetMesh) {
@@ -164,7 +164,7 @@ function createTargetMesh(type, texture, after) {
     var loader = new THREE.STLLoader();
     loader.load('model/Yoda-SuperLite.stl', function(geometry) {
       var targetGeometry = geometry;
-      var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
+      var targetMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(canvas)});
       var mesh = new THREE.Mesh(targetGeometry, targetMaterial);
       setupGeometryUvs(mesh, sphereMesh);
       if (targetMesh) {
@@ -182,7 +182,7 @@ function createTargetMesh(type, texture, after) {
 var video = document.getElementsByTagName('video')[0];
 var qrcode = document.getElementById('qrcode');
 var targetMesh;
-var texture = document.getElementById('texture');
+var canvas = document.getElementById('texture');
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 3;
@@ -200,13 +200,13 @@ sphereGeometry.faces.forEach(function(face, faceIndex) {
     uv[i].y = sphereGeometry.vertices[face[vi]].y / 2 + 0.5;
   });
 });
-var sphereMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(texture)});
+var sphereMaterial = new THREE.MeshBasicMaterial({map:new THREE.Texture(canvas)});
 var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphereMesh.material.transparent = true;
 sphereMesh.material.opacity = 0;
 scene.add(sphereMesh);
 
-createTargetMesh('torusKnot', texture);
+createTargetMesh('torusKnot', canvas);
 
 
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -223,7 +223,7 @@ render();
 
 
 
-var gc = texture.getContext('2d');
+var gc = canvas.getContext('2d');
 var image = new Image();
 image.onload = function() {
   gc.drawImage(image, 0, 0);
@@ -292,7 +292,7 @@ imgs.forEach(function(img) {
 buttons = document.querySelectorAll('#geometries button');
 buttons.forEach(function(button) {
   button.addEventListener('click', function() {
-    createTargetMesh(button.textContent, texture);
+    createTargetMesh(button.textContent, canvas);
   });
 });
 
