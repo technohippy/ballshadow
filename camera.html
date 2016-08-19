@@ -18,6 +18,9 @@
     height:100%;
     z-index:-1;
   }
+  button.on-desk {
+    transform: rotate(180deg);
+  }
   #start {
     margin:0;
     padding:0;
@@ -25,7 +28,16 @@
     bottom:0;
     left:0;
     height: 10%;
-    width: 50%;
+    width: 40%;
+  }
+  #rotate {
+    margin:0;
+    padding:0;
+    position:absolute;
+    bottom:0;
+    right:40%;
+    height: 10%;
+    width: 20%;
   }
   #finish {
     margin:0;
@@ -34,13 +46,14 @@
     bottom:0;
     right:0;
     height: 10%;
-    width: 50%;
+    width: 40%;
   }
   </style>
 </head>
 <body>
 <video id="camera" autoplay></video>
 <button id="start">Start</button>
+<button id="rotate">Rotate</button>
 <button id="finish">Finish</button>
 <script src="https://skyway.io/dist/0.3/peer.js"></script>
 <script>
@@ -53,6 +66,20 @@ var mediaStream;
 var startButton = document.getElementById('start');
 startButton.addEventListener('click', function() {
   conn.send('start');
+});
+
+var rotateButton = document.getElementById('rotate');
+rotateButton.addEventListener('click', function() {
+  if (document.querySelector('.on-desk')) {
+    startButton.className = '';
+    rotateButton.className = '';
+    finishButton.className = '';
+  }
+  else {
+    startButton.className = 'on-desk';
+    rotateButton.className = 'on-desk';
+    finishButton.className = 'on-desk';
+  }
 });
 
 var finishButton = document.getElementById('finish');
