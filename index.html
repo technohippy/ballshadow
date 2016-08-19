@@ -35,30 +35,40 @@
 <script src="lib/qrcode.js"></script>
 <script src="js/ballshadow.js"></script>
 <script>
-var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
-peer.on('open', function(id) {
-  new QRCode(qrcode, {
-    text: window.location + 'camera.html#' + id,
-    width: 128,
-    height: 128
-  });
-});
-peer.on('call', function(call) {
-  call.on('stream', function(stream) {
-    video.src = window.URL.createObjectURL(stream);
-  });
-  call.answer();
-});
-peer.on('connection', function(conn) {
-  conn.on('open', function() {
-    conn.on('data', function(data) {
-      console.log('received: ' + data);
-      if (data === 'freeze') {
-        video.click();
-      }
+if (typeof Peer !== 'undefined') {
+  var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
+  peer.on('open', function(id) {
+    new QRCode(qrcode, {
+      text: window.location + 'camera.html#' + id,
+      width: 128,
+      height: 128
     });
   });
-});
+  peer.on('call', function(call) {
+    call.on('stream', function(stream) {
+      video.src = window.URL.createObjectURL(stream);
+    });
+    call.answer();
+  });
+  peer.on('connection', function(conn) {
+    conn.on('open', function() {
+      conn.on('data', function(data) {
+        console.log('received: ' + data);
+        if (data === 'start') {
+          if (!(targetMesh.material.map instanceof THREE.VideoTexture)) {
+            targetMesh.material.map = new THREE.VideoTexture(video);
+            sphereMesh.material.map = new THREE.VideoTexture(video);
+          }
+          targetMesh.material.map.needsUpdate = true;
+          sphereMesh.material.map.needsUpdate = true;
+        }
+        else if (data === 'freeze') {
+          video.click();
+        }
+      });
+    });
+  });
+}
 </script>
 </body>
 </html>

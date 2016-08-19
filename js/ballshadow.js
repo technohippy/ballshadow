@@ -227,8 +227,12 @@ var gc = canvas.getContext('2d');
 var image = new Image();
 image.onload = function() {
   gc.drawImage(image, 0, 0);
-  sphereMesh.material.map.needsUpdate = true;
+  if (targetMesh.material.map instanceof THREE.VideoTexture) {
+    targetMesh.material.map = new THREE.Texture(canvas);
+    sphereMesh.material.map = new THREE.Texture(canvas);
+  }
   targetMesh.material.map.needsUpdate = true;
+  sphereMesh.material.map.needsUpdate = true;
 };
 //image.src = 'img/iron.png';
 image.src = 'img/texture.png';
@@ -250,6 +254,10 @@ video.addEventListener('click', function() {
   var diDw = 400;
   var diDh = 400;
   gc.drawImage(video, diSx, diSy, diSw, diSh, 0, 0, diDw, diDh);
+  if (targetMesh.material.map instanceof THREE.VideoTexture) {
+    targetMesh.material.map = new THREE.Texture(canvas);
+    sphereMesh.material.map = new THREE.Texture(canvas);
+  }
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
   video.className = 'hide';
@@ -263,13 +271,6 @@ imgs.forEach(function(img) {
         video.className = '';
         video.style.width = video.videoWidth + 'px';
         video.style.height = video.videoHeight + 'px';
-        /*
-        navigator.webkitGetUserMedia({video:true}, function(stream) {
-          video.src = window.URL.createObjectURL(stream);
-        }, function(err) {
-          console.log(err);
-        });
-        */
       }
       else {
         video.className = 'hide';
@@ -300,4 +301,22 @@ window.addEventListener('resize', function() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+document.addEventListener('keypress', function(event) {
+  console.log(event.keyCode);
+  if (event.keyCode === 118) { // v
+    navigator.webkitGetUserMedia({video:true}, function(stream) {
+      video.src = window.URL.createObjectURL(stream);
+
+      if (!(targetMesh.material.map instanceof THREE.VideoTexture)) {
+        targetMesh.material.map = new THREE.VideoTexture(video);
+        sphereMesh.material.map = new THREE.VideoTexture(video);
+      }
+      targetMesh.material.map.needsUpdate = true;
+      sphereMesh.material.map.needsUpdate = true;
+    }, function(err) {
+      console.log(err);
+    });
+  }
 });
