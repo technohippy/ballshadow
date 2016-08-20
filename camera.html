@@ -18,7 +18,7 @@
     height:100%;
     z-index:-1;
   }
-  button.on-desk {
+  .on-desk {
     transform: rotate(180deg);
   }
   #start {
@@ -63,6 +63,8 @@ peer.on('open', function(id) { console.log('peer id:' + id) });
 var conn = peer.connect(targetPeerId);
 var mediaStream;
 
+var video = document.getElementById('camera');
+
 var startButton = document.getElementById('start');
 startButton.addEventListener('click', function() {
   conn.send('start');
@@ -74,11 +76,13 @@ rotateButton.addEventListener('click', function() {
     startButton.className = '';
     rotateButton.className = '';
     finishButton.className = '';
+    video.className = '';
   }
   else {
     startButton.className = 'on-desk';
     rotateButton.className = 'on-desk';
     finishButton.className = 'on-desk';
+    video.className = 'on-desk';
   }
 });
 
@@ -109,7 +113,6 @@ window.addEventListener('load', function() {
 
     navigator.webkitGetUserMedia(options,
       function(localMediaStream) {
-        var video = document.getElementById('camera');
         video.src = window.URL.createObjectURL(localMediaStream);
         var call = peer.call(targetPeerId, localMediaStream);
         mediaStream = localMediaStream;
