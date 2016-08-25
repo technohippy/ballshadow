@@ -298,7 +298,7 @@ var Config = new (function() {
       qrcode.className = 'hide';
     }
   };
-  this.toggleTexture = function() {
+  this.toggleVideo = function() {
     if (video.className === 'hide') {
       video.className = '';
       video.style.width = video.videoWidth + 'px';
@@ -306,6 +306,14 @@ var Config = new (function() {
     }
     else {
       video.className = 'hide';
+    }
+  };
+  this.toggleTexture = function() {
+    if (canvas.className === 'hide') {
+      canvas.className = '';
+    }
+    else {
+      canvas.className = 'hide';
     }
   };
 });
@@ -327,6 +335,7 @@ gui.add(Config, 'texture', textureValues).onChange(function(value) {
   image.src = value;
 });
 gui.add(Config, 'toggleQRCode');
+gui.add(Config, 'toggleVideo');
 gui.add(Config, 'toggleTexture');
 window.addEventListener("load", function() {
   document.getElementById("dat-gui-container").appendChild(gui.domElement);
