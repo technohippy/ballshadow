@@ -59,8 +59,8 @@ header div span {
   transition-timing-function: ease-in-out;
 }
 #texture.hide {
-  bottom:-380px;
-  left:-380px;
+  bottom:-400px;
+  left:-400px;
 }
 #qrcode {
   z-index: 1;
