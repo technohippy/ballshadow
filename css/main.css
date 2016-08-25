@@ -19,7 +19,11 @@ header {
   left: 0;
 }
 header div {
-  padding: 10px;
+  padding: 5px;
+}
+header div span {
+  font-size: 150%;
+  vertical-align: middle;
 }
 #main {
   position: absolute;

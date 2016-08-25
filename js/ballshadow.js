@@ -234,8 +234,7 @@ image.onload = function() {
   targetMesh.material.map.needsUpdate = true;
   sphereMesh.material.map.needsUpdate = true;
 };
-//image.src = 'img/iron.png';
-image.src = 'img/texture.png';
+image.src = 'img/icon.png';
 
 video.addEventListener('click', function() {
   video.style.width = video.videoWidth + 'px';
@@ -290,7 +289,7 @@ document.addEventListener('keypress', function(event) {
 
 var Config = new (function() {
   this.geometry = 'torusKnot';
-  this.texture = 'img/texture.png';
+  this.texture = 'img/icon.png';
   this.toggleQRCode = function() {
     if (qrcode.className === 'hide') {
       qrcode.className = '';
@@ -316,6 +315,7 @@ gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
   createTargetMesh(value, canvas);
 });
 var textureValues = {
+  "title icon": "img/icon.png",
   "white": "img/white.png",
   "red to black": "img/r2b.jpg",
   "black to red": "img/b2r.jpg",
