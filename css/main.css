@@ -18,6 +18,9 @@ header {
   top: 0;
   left: 0;
 }
+header div {
+  padding: 10px;
+}
 #main {
   position: absolute;
   top: var(--header-height);
