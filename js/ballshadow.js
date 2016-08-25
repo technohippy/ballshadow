@@ -179,6 +179,7 @@ function createTargetMesh(type, canvas, after) {
   }
 }
 
+var headerHeight = 42;
 var video = document.getElementsByTagName('video')[0];
 var qrcode = document.getElementById('qrcode');
 var targetMesh;
@@ -187,10 +188,9 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 3;
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.domElement.id = 'wegbl-canvas';
-document.body.appendChild(renderer.domElement);
+var renderer = new THREE.WebGLRenderer({canvas:document.getElementById('webgl-canvas')});
+renderer.setSize(window.innerWidth, window.innerHeight - headerHeight);
+renderer.setClearColor(0x607d8b);
 
 var sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 sphereGeometry.faces.forEach(function(face, faceIndex) {
@@ -263,44 +263,11 @@ video.addEventListener('click', function() {
   video.className = 'hide';
 });
 
-var imgs = document.querySelectorAll('#textures img');
-imgs.forEach(function(img) {
-  img.addEventListener('click', function() {
-    if (img.src.match(/movie\.png$/)) {
-      if (video.className === 'hide') {
-        video.className = '';
-        video.style.width = video.videoWidth + 'px';
-        video.style.height = video.videoHeight + 'px';
-      }
-      else {
-        video.className = 'hide';
-      }
-    }
-    else if (img.src.match(/phone\.png$/)) {
-      if (qrcode.className === 'hide') {
-        qrcode.className = '';
-      }
-      else {
-        qrcode.className = 'hide';
-      }
-    }
-    else {
-      image.src = img.src;
-    }
-  });
-});
-
-buttons = document.querySelectorAll('#geometries button');
-buttons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    createTargetMesh(button.textContent, canvas);
-  });
-});
-
 window.addEventListener('resize', function() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  var height = window.innerHeight - headerHeight;
+  camera.aspect = window.innerWidth / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth, height);
 });
 
 document.addEventListener('keypress', function(event) {
@@ -319,4 +286,48 @@ document.addEventListener('keypress', function(event) {
       console.log(err);
     });
   }
+});
+
+var Config = new (function() {
+  this.geometry = 'torusKnot';
+  this.texture = 'img/texture.png';
+  this.toggleQRCode = function() {
+    if (qrcode.className === 'hide') {
+      qrcode.className = '';
+    }
+    else {
+      qrcode.className = 'hide';
+    }
+  };
+  this.toggleTexture = function() {
+    if (video.className === 'hide') {
+      video.className = '';
+      video.style.width = video.videoWidth + 'px';
+      video.style.height = video.videoHeight + 'px';
+    }
+    else {
+      video.className = 'hide';
+    }
+  };
+});
+var geometryValues = ['sphere', 'torus', 'torusKnot', 'yoda'];
+var gui = new dat.GUI({autoPlace: false});
+gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
+  createTargetMesh(value, canvas);
+});
+var textureValues = {
+  "white": "img/white.png",
+  "red to black": "img/r2b.jpg",
+  "black to red": "img/b2r.jpg",
+  "sketch": "img/texture.png",
+  "soil": "img/soil.png",
+  "iron": "img/iron.png"
+};
+gui.add(Config, 'texture', textureValues).onChange(function(value) {
+  image.src = value;
+});
+gui.add(Config, 'toggleQRCode');
+gui.add(Config, 'toggleTexture');
+window.addEventListener("load", function() {
+  document.getElementById("dat-gui-container").appendChild(gui.domElement);
 });

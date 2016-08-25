@@ -1,4 +1,42 @@
-body { margin: 0; }
+/* https://www.materialpalette.com/blue-grey/grey */
+:root {
+  --header-height: 42px;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+}
+header {
+  text-transform: uppercase;
+  color: white;
+  height: var(--header-height);
+  width: 100%;
+  background-color: #455a64;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#main {
+  position: absolute;
+  top: var(--header-height);
+  width: 100%;
+  height: calc(100% - var(--header-height));
+}
+#dat-gui-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+#webgl-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 #texture {
   position:absolute;
   bottom:0;
@@ -18,6 +56,7 @@ body { margin: 0; }
   left:-380px;
 }
 #qrcode {
+  z-index: 1;
   position:absolute;
   top:0;
   left:100px;
@@ -93,4 +132,3 @@ video.hide {
   top:190px;
   display:none;
 }
-
