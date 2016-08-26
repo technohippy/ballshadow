@@ -227,13 +227,14 @@ image.onload = function() {
   if (targetMesh.material.map instanceof THREE.VideoTexture) {
     targetMesh.material.map = new THREE.Texture(canvas);
     sphereMesh.material.map = new THREE.Texture(canvas);
+    reflectVideo();
   }
   targetMesh.material.map.needsUpdate = true;
   sphereMesh.material.map.needsUpdate = true;
 };
 image.src = 'img/icon.png';
 
-video.addEventListener('click', function() {
+function reflectVideo() {
   video.style.width = video.videoWidth + 'px';
   video.style.height = video.videoHeight + 'px';
 
@@ -256,6 +257,10 @@ video.addEventListener('click', function() {
   }
   sphereMesh.material.map.needsUpdate = true;
   targetMesh.material.map.needsUpdate = true;
+}
+
+video.addEventListener('click', function() {
+  reflectVideo();
   video.className = 'hide';
 });
 
@@ -332,8 +337,8 @@ gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
   createTargetMesh(value, canvas);
 });
 gui.add(Config, 'toggleQRCode');
-gui.add(Config, 'toggleVideo');
 gui.add(Config, 'toggleTexture');
+gui.add(Config, 'toggleVideo');
 window.addEventListener("load", function() {
   document.getElementById("dat-gui-container").appendChild(gui.domElement);
 });

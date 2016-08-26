@@ -44,6 +44,7 @@ if (typeof Peer !== 'undefined') {
     });
     call.answer();
   });
+  var streaming = false;
   peer.on('connection', function(conn) {
     conn.on('open', function() {
       conn.on('data', function(data) {
@@ -51,19 +52,30 @@ if (typeof Peer !== 'undefined') {
         if (data === 'start') {
           qrcode.className = 'hide';
           video.className = '';
+          streaming = true;
+          /*
           if (!(targetMesh.material.map instanceof THREE.VideoTexture)) {
             targetMesh.material.map = new THREE.VideoTexture(video);
             sphereMesh.material.map = new THREE.VideoTexture(video);
           }
+          */
           targetMesh.material.map.needsUpdate = true;
           sphereMesh.material.map.needsUpdate = true;
         }
         else if (data === 'freeze') {
+          streaming = false;
           video.click();
         }
       });
     });
   });
+  function reflectVideoIfNeeded() {
+    if (streaming) {
+      reflectVideo();
+    }
+    window.requestAnimationFrame(reflectVideoIfNeeded);
+  }
+  reflectVideoIfNeeded();
 }
 </script>
 </body>
