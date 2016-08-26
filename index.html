@@ -12,7 +12,7 @@
 </header>
 <div id="main">
   <div id="qrcode" class="hide"></div>
-  <video class="hide" width="300" height="400" autoplay></video>
+  <video id="camera-view" class="hide" width="300" height="400" autoplay></video>
   <canvas id="texture" width="400" height="400"></canvas>
   <div id="dat-gui-container"></div>
   <canvas id="webgl-canvas"></canvas>
@@ -49,6 +49,8 @@ if (typeof Peer !== 'undefined') {
       conn.on('data', function(data) {
         console.log('received: ' + data);
         if (data === 'start') {
+          qrcode.className = 'hide';
+          video.className = '';
           if (!(targetMesh.material.map instanceof THREE.VideoTexture)) {
             targetMesh.material.map = new THREE.VideoTexture(video);
             sphereMesh.material.map = new THREE.VideoTexture(video);

@@ -129,7 +129,7 @@ header div span {
   text-decoration:none;
   color:white;
 }
-video {
+#camera-view {
   transform-origin: 0 0;
   transform: scale(0.5);
   z-index:1;
@@ -140,6 +140,6 @@ video {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
 }
-video.hide {
+#camera-view.hide {
   left: -300px;
 }
