@@ -45,35 +45,39 @@ header div span {
   height: 100%;
 }
 #texture {
+  transform: scale(0.5);
   position:absolute;
-  bottom:0;
-  left:0;
+  bottom:-100px;
+  left:-100px;
   margin:0;
   padding:0;
   width:400px;
   height:400px;
-  z-index: 2;
+  z-index: 1;
   background-color:white;
-  transition-property: bottom, left;
+  transition-property: top, bottom, left;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
 }
 #texture.hide {
-  bottom:-400px;
-  left:-400px;
+  bottom:-100px;
+  left:-300px;
 }
 #qrcode {
   z-index: 1;
   position:absolute;
-  top:0;
-  left:100px;
   width:128px;
   height:128px;
   padding:5px;
   background:white;
+  top: calc(50% - 64px);
+  left: calc(50% - 64px);
+  transition-property: transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
 }
 #qrcode.hide {
-  display:none;
+  transform:scale(0);
 }
 #webgl-canvas {
   margin:0;

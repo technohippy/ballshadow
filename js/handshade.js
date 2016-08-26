@@ -1,12 +1,9 @@
 (function() {
-  var canvas = document.getElementById('texture');
-  canvas.addEventListener('click', function() {
-    if (canvas.className === 'hide') {
-      canvas.className = '';
-    }
-    else {
-      canvas.className = 'hide';
-    }
+  ['texture', 'qrcode'].forEach(function(id) {
+    var elm = document.getElementById(id);
+    elm.addEventListener('click', function() {
+      elm.className = elm.className === 'hide' ? '' : 'hide';
+    });
   });
 })();
 
@@ -317,11 +314,6 @@ var Config = new (function() {
     }
   };
 });
-var geometryValues = ['sphere', 'torus', 'torusKnot', 'yoda'];
-var gui = new dat.GUI({autoPlace: false});
-gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
-  createTargetMesh(value, canvas);
-});
 var textureValues = {
   "title icon": "img/icon.png",
   "white": "img/white.png",
@@ -331,8 +323,13 @@ var textureValues = {
   "soil": "img/soil.png",
   "iron": "img/iron.png"
 };
+var geometryValues = ['sphere', 'torus', 'torusKnot', 'yoda'];
+var gui = new dat.GUI({autoPlace: false});
 gui.add(Config, 'texture', textureValues).onChange(function(value) {
   image.src = value;
+});
+gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
+  createTargetMesh(value, canvas);
 });
 gui.add(Config, 'toggleQRCode');
 gui.add(Config, 'toggleVideo');

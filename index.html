@@ -13,13 +13,13 @@
 <div id="main">
   <div id="qrcode" class="hide"></div>
   <video class="hide" width="300" height="400" autoplay></video>
+  <canvas id="texture" width="400" height="400"></canvas>
   <div id="dat-gui-container"></div>
   <canvas id="webgl-canvas"></canvas>
 </div>
 <div id="foot">
   <a href="http://dcgi.fel.cvut.cz/home/sykorad/stylit" target="_blank">Inspired by http://dcgi.fel.cvut.cz/home/sykorad/stylit</a>
 </div>
-<canvas id="texture" class="hide" width="400" height="400"></canvas>
 
 <script src="https://skyway.io/dist/0.3/peer.js"></script>
 <script src="lib/three.js"></script>
@@ -27,7 +27,7 @@
 <script src="lib/STLLoader.js"></script>
 <script src="lib/qrcode.js"></script>
 <script src="lib/dat.gui.min.js"></script>
-<script src="js/ballshadow.js"></script>
+<script src="js/handshade.js"></script>
 <script>
 if (typeof Peer !== 'undefined') {
   var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
