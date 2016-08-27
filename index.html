@@ -51,14 +51,8 @@ if (typeof Peer !== 'undefined') {
         console.log('received: ' + data);
         if (data === 'start') {
           qrcode.className = 'hide';
-          video.className = '';
+          //video.className = '';
           streaming = true;
-          /*
-          if (!(targetMesh.material.map instanceof THREE.VideoTexture)) {
-            targetMesh.material.map = new THREE.VideoTexture(video);
-            sphereMesh.material.map = new THREE.VideoTexture(video);
-          }
-          */
           targetMesh.material.map.needsUpdate = true;
           sphereMesh.material.map.needsUpdate = true;
         }
