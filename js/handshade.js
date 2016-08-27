@@ -321,12 +321,12 @@ var Config = new (function() {
 });
 var textureValues = {
   "title icon": "img/icon.png",
-  "white": "img/white.png",
   "red to black": "img/r2b.jpg",
   "black to red": "img/b2r.jpg",
   "sketch": "img/texture.png",
   "soil": "img/soil.png",
-  "iron": "img/iron.png"
+  "iron": "img/iron.png",
+  "white": "img/white.png"
 };
 var geometryValues = ['sphere', 'torus', 'torusKnot', 'yoda'];
 var gui = new dat.GUI({autoPlace: false});
@@ -338,7 +338,7 @@ gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
 });
 gui.add(Config, 'toggleQRCode');
 gui.add(Config, 'toggleTexture');
-gui.add(Config, 'toggleVideo');
+//gui.add(Config, 'toggleVideo');
 window.addEventListener("load", function() {
   document.getElementById("dat-gui-container").appendChild(gui.domElement);
 });
