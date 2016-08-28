@@ -33,6 +33,7 @@
 if (typeof Peer !== 'undefined') {
   var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
   peer.on('open', function(id) {
+    qrcode.innerHTML = '';
     new QRCode(qrcode, {
       text: window.location + 'camera.html#' + id,
       width: 128,

@@ -151,5 +151,5 @@ header a img {
   transition-timing-function: ease-in-out;
 }
 #camera-view.hide {
-  left: -300px;
+  left: -400px;
 }
