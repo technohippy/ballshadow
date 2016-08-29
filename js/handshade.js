@@ -312,14 +312,6 @@ var Config = new (function() {
     }
   };
   this.toggleTexture = function() {
-    /*
-    if (canvas.className === 'hide') {
-      canvas.className = '';
-    }
-    else {
-      canvas.className = 'hide';
-    }
-    */
     if (canvas.parentNode.className === 'hide') {
       canvas.parentNode.className = '';
     }
