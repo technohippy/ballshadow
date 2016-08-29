@@ -185,7 +185,7 @@ camera.position.z = 3;
 
 var renderer = new THREE.WebGLRenderer({canvas:document.getElementById('webgl-canvas')});
 renderer.setSize(window.innerWidth, window.innerHeight - headerHeight);
-renderer.setClearColor(0x607d8b);
+renderer.setClearColor(0x510fad);
 
 var sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 sphereGeometry.faces.forEach(function(face, faceIndex) {

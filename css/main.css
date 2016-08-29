@@ -6,12 +6,15 @@ body {
   margin: 0;
   overflow: hidden;
 }
+* {
+  font-family: 'Roboto', sans-serif;
+}
 header {
   text-transform: uppercase;
   color: white;
   height: var(--header-height);
   width: 100%;
-  background-color: #455a64;
+  background-color: #320571;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
   z-index: 2;
   position: absolute;
