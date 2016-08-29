@@ -142,14 +142,18 @@ header a img {
   margin:0;
 }
 #foot {
+  font-size:small;
   position:absolute;
   bottom:10px;
   right:10px;
+  color:white;
 }
 #foot a {
-  font-size:small;
   text-decoration:none;
   color:white;
+}
+#foot a:hover {
+  color: #f16c97;
 }
 #camera-view {
   transform-origin: 0 0;
