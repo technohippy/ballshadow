@@ -223,6 +223,9 @@ render();
 var gc = canvas.getContext('2d');
 var image = new Image();
 image.onload = function() {
+  if (image.src.match(/.(png|gif|jpg|jpeg)$/)) {
+    streaming = false;
+  }
   gc.drawImage(image, 0, 0);
   if (targetMesh.material.map instanceof THREE.VideoTexture) {
     targetMesh.material.map = new THREE.Texture(canvas);
