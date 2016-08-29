@@ -1,9 +1,7 @@
 (function() {
-  ['texture', 'qrcode'].forEach(function(id) {
-    var elm = document.getElementById(id);
-    elm.addEventListener('click', function() {
-      elm.className = elm.className === 'hide' ? '' : 'hide';
-    });
+  var elm = document.getElementById('qrcode');
+  elm.addEventListener('click', function() {
+    elm.className = elm.className === 'hide' ? '' : 'hide';
   });
 })();
 
@@ -314,11 +312,19 @@ var Config = new (function() {
     }
   };
   this.toggleTexture = function() {
+    /*
     if (canvas.className === 'hide') {
       canvas.className = '';
     }
     else {
       canvas.className = 'hide';
+    }
+    */
+    if (canvas.parentNode.className === 'hide') {
+      canvas.parentNode.className = '';
+    }
+    else {
+      canvas.parentNode.className = 'hide';
     }
   };
 });
@@ -333,14 +339,14 @@ var textureValues = {
 };
 var geometryValues = ['sphere', 'torus', 'torusKnot', 'yoda'];
 var gui = new dat.GUI({autoPlace: false});
+gui.add(Config, 'toggleTexture');
+gui.add(Config, 'toggleQRCode');
 gui.add(Config, 'texture', textureValues).onChange(function(value) {
   image.src = value;
 });
 gui.add(Config, 'geometry', geometryValues).onChange(function(value) {
   createTargetMesh(value, canvas);
 });
-gui.add(Config, 'toggleQRCode');
-gui.add(Config, 'toggleTexture');
 //gui.add(Config, 'toggleVideo');
 window.addEventListener("load", function() {
   document.getElementById("dat-gui-container").appendChild(gui.domElement);
