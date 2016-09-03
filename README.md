@@ -7,6 +7,8 @@ Handshade helps you to shade a model by your hand painting. This is inspired by 
 
 [![Handshade](http://img.youtube.com/vi/K7krLWNRdmo/0.jpg)](http://www.youtube.com/watch?v=K7krLWNRdmo)
 
+Note: You can 3d-print the camera stand used in the video. Please use [stand.stl](https://raw.githubusercontent.com/technohippy/handshade/master/stand.stl).
+
 Ref
 ----
 - http://dcgi.fel.cvut.cz/home/sykorad/stylit
