@@ -43,49 +43,16 @@
 <script src="lib/dat.gui.min.js"></script>
 <script src="js/handshade.js"></script>
 <script>
-if (typeof Peer !== 'undefined') {
-  var peer = new Peer({key: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'});
-  peer.on('open', function(id) {
-    qrcode.innerHTML = '';
-    new QRCode(qrcode, {
-      text: window.location + 'camera.html#' + id,
-      width: 128,
-      height: 128
-    });
-  });
-  peer.on('call', function(call) {
-    call.on('stream', function(stream) {
-      video.src = window.URL.createObjectURL(stream);
-    });
-    call.answer();
-  });
-  var streaming = false;
-  peer.on('connection', function(conn) {
-    conn.on('open', function() {
-      conn.on('data', function(data) {
-        console.log('received: ' + data);
-        if (data === 'start') {
-          qrcode.className = 'hide';
-          //video.className = '';
-          streaming = true;
-          targetMesh.material.map.needsUpdate = true;
-          sphereMesh.material.map.needsUpdate = true;
-        }
-        else if (data === 'freeze') {
-          streaming = false;
-          video.click();
-        }
-      });
-    });
-  });
-  function reflectVideoIfNeeded() {
-    if (streaming) {
-      reflectVideo();
-    }
-    window.requestAnimationFrame(reflectVideoIfNeeded);
-  }
-  reflectVideoIfNeeded();
-}
+Handshade.start({
+  webglCanvasId: 'webgl-canvas',
+  webglClearColor: 0x510fad,
+  webglHeaderHeight: 42,
+  textureCanvasId: 'texture',
+  textureVideoId: 'camera-view',
+  qrCodeId: 'qrcode',
+  datGuiId: 'dat-gui-container',
+  peerKey: '743eda5e-f6f2-42f1-867e-a7d767c12bd9'
+});
 </script>
 </body>
 </html>
